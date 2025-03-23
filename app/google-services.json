@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "98914098235",
+    "project_id": "raychat-ee833",
+    "storage_bucket": "raychat-ee833.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98914098235:android:b3fbcd189008e9cd7a901e",
+        "android_client_info": {
+          "package_name": "com.pedrenareyes.raychat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-v9g7wERh1KbxdYb2b42cvd2kKYTP7Nw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
