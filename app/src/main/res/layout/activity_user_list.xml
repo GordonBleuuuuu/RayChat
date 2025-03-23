@@ -1,32 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".UserListActivity">
 
     <ListView
-        android:id="@+id/userListView"
+        android:id="@+id/chatListView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/messageInputLayout"
+        android:padding="8dp"
+        android:divider="@android:color/transparent"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true" />
 
-    <Button
-        android:id="@+id/signOutButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Out" />
-
-    <Button
-        android:id="@+id/createNewMessageButton"
+    <LinearLayout
+        android:id="@+id/messageInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start New Chat"
-        android:layout_margin="8dp" />
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-    <Button
-        android:id="@+id/profileButton"
-        android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Type your message..." />
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/selectUserListView"  android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profile" />
-
-</LinearLayout>
+        android:visibility="gone"/>  </RelativeLayout>

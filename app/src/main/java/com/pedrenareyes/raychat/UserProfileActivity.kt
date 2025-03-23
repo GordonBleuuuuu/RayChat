@@ -11,7 +11,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.pedrenareyes.raychat.R
 
-class UserProfileActivity : AppCompatActivity() {
+class  UserProfileActivity : AppCompatActivity() {
 
     private lateinit var nameEditText: EditText
     private lateinit var bioEditText: EditText

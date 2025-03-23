@@ -40,23 +40,23 @@ class NewMessageActivity : AppCompatActivity() {
     }
 
     private fun findUserByEmail(email: String) {
-        Log.d("NewMessageActivity", "Finding user by email: $email") // Added Log
+        Log.d("NewMessageActivity", "Finding user by email: $email")
         usersRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("NewMessageActivity", "findUserByEmail onDataChange called") // Added Log
+                Log.d("NewMessageActivity", "findUserByEmail onDataChange called")
                 if (snapshot.exists()) {
-                    Log.d("NewMessageActivity", "User found with email: $email") // Added Log
+                    Log.d("NewMessageActivity", "User found with email: $email")
                     for (userSnapshot in snapshot.children) {
-                        val userId = userSnapshot.key
-                        if (userId != null) {
-                            Log.d("NewMessageActivity", "User ID found: $userId") // Added Log
-                            startChat(userId)
+                        val user = userSnapshot.getValue(User::class.java)
+                        if (user != null && user.uid != null) {
+                            Log.d("NewMessageActivity", "User ID found: ${user.uid}")
+                            startChat(user.uid!!) // Use the non-null assertion here
                             return
                         }
                     }
-                    Log.w("NewMessageActivity", "User found, but no UID retrieved") // Added Log
+                    Log.w("NewMessageActivity", "User found, but no UID retrieved")
                 } else {
-                    Log.d("NewMessageActivity", "User not found, creating new user") // Added Log
+                    Log.d("NewMessageActivity", "User not found, creating new user")
                     createNewUser(email)
                 }
             }
@@ -69,13 +69,14 @@ class NewMessageActivity : AppCompatActivity() {
     }
 
     private fun createNewUser(email: String) {
-        Log.d("NewMessageActivity", "Creating new user with email: $email") // Added Log
+        Log.d("NewMessageActivity", "Creating new user with email: $email")
         val userId = usersRef.push().key
 
         if (userId != null) {
-            usersRef.child(userId).child("email").setValue(email)
+            val newUser = User(email = email, uid = userId) // Create User object
+            usersRef.child(userId).setValue(newUser)
                 .addOnSuccessListener {
-                    Log.d("NewMessageActivity", "User added to database: $email, UID: $userId") // Added Log
+                    Log.d("NewMessageActivity", "User added to database: $email, UID: $userId")
                     Toast.makeText(this, "User Created", Toast.LENGTH_SHORT).show()
                     startChat(userId)
                 }
@@ -87,9 +88,11 @@ class NewMessageActivity : AppCompatActivity() {
     }
 
     private fun startChat(userId: String) {
-        Log.d("NewMessageActivity", "Starting ChatActivity with userId: $userId") // Added Log
+        Log.d("NewMessageActivity", "Starting ChatActivity with userId: $userId")
         val intent = Intent(this@NewMessageActivity, ChatActivity::class.java)
         intent.putExtra("userId", userId)
         startActivity(intent)
     }
 }
+
+data class User(var name: String? = null, var email: String? = null, var uid: String? = null) // Added User class

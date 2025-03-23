@@ -23,6 +23,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var chatMessages: ArrayList<String>
     private lateinit var adapter: ArrayAdapter<String>
     private lateinit var otherUserId: String
+    private lateinit var currentUserId: String // Added for hardcoded user
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +42,11 @@ class ChatActivity : AppCompatActivity() {
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, chatMessages)
         chatListView.adapter = adapter
 
-        otherUserId = intent.getStringExtra("userId") ?: ""
-        val currentUserId = auth.currentUser?.uid ?: ""
+        // Hardcoded User IDs for Testing
+        currentUserId = "kenpedrena@gmail.com"  // Replace with a known user ID from your database
+        otherUserId = "reyesjosephmarting@gmail.com"    // Replace with another known user ID from your database
 
-        Log.d("ChatActivity", "Chat with userId: $otherUserId")
+        Log.d("ChatActivity", "Hardcoded Chat with userId: $otherUserId")
 
         val chatId = if (currentUserId > otherUserId) {
             "$currentUserId-$otherUserId"
@@ -60,7 +62,7 @@ class ChatActivity : AppCompatActivity() {
                     val displayMessage = if (senderId == currentUserId) {
                         "You: $message"
                     } else {
-                        "$otherUserId: $message"
+                        "Other User: $message" // Simplified for hardcoded
                     }
                     chatMessages.add(displayMessage)
                     adapter.notifyDataSetChanged()
@@ -83,12 +85,12 @@ class ChatActivity : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e("ChatActivity", "Database error: ${error.message}")
-                Toast.makeText(this@ChatActivity, "Database error: ${error.message}", Toast.LENGTH_SHORT).show() // Added Toast
+                Toast.makeText(this@ChatActivity, "Database error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
 
         sendButton.setOnClickListener {
-            val message = messageEditText.text.toString().trim() // Trim whitespace
+            val message = messageEditText.text.toString().trim()
             if (message.isNotEmpty()) {
                 val messageData = HashMap<String, String>()
                 messageData["sender"] = currentUserId
@@ -101,11 +103,11 @@ class ChatActivity : AppCompatActivity() {
                     }
                     .addOnFailureListener { exception ->
                         Log.e("ChatActivity", "Failed to send message: ${exception.message}")
-                        Toast.makeText(this@ChatActivity, "Failed to send message.", Toast.LENGTH_SHORT).show() // Added Toast
+                        Toast.makeText(this@ChatActivity, "Failed to send message.", Toast.LENGTH_SHORT).show()
                     }
 
             } else {
-                Toast.makeText(this@ChatActivity, "Enter a message.", Toast.LENGTH_SHORT).show() // Added Toast
+                Toast.makeText(this@ChatActivity, "Enter a message.", Toast.LENGTH_SHORT).show()
             }
         }
 
